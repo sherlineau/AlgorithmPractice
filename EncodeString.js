@@ -58,37 +58,3 @@ console.log(encodeStr(str2));
 console.log(encodeStr(str3));
 console.log(encodeStr(str4));
 
-// /* 
-//   String Decode  
-// */
-
-const str5 = "a3b2c1d3";
-// const expected1 = "aaabbcddd";
-
-const str6 = "a3b2c12d10";
-// const expected2 = "aaabbccccccccccccdddddddddd";
-
-// /**
-//  * Decodes the given string by duplicating each character by the following int
-//  * amount if there is an int after the character.
-//  * - Time: O(?).
-//  * - Space: O(?).
-//  * @param {string} str An encoded string with characters that may have an int
-//  *    after indicating how many times the character occurs.
-//  * @returns {string} The given str decoded / expanded.
-//  */
-// function decodeStr(str) {
-//     let decoded = "";
-//     let numstr = "";
-//     let char = "";
-
-//     for (let i = 0; i < str.length; i++) {
-//         if (parseInt(str[i]) || parseInt(str[i]) == 0 ) {
-//             numstr += str[i];
-//             char = str[i - numstr.length];
-//             if ( i == str.length - 1){
-//                 decoded += decodeRLE(char, numstr);
-//             }
-//         }
-
-//     }
