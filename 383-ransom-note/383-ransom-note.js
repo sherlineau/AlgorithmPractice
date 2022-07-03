@@ -14,9 +14,9 @@ var canConstruct = function(ransomNote, magazine) {
         }
     }
     
-    //loops through mag_hash for each key
+    //iterate through ransomNote input
     for (var j=0; j < ransomNote.length; j++) {
-        // if character at index j is not found in mag_hase return false
+        // if character at index j is not found in mag_hash return false
         if(!mag_hash[ransomNote[j]]) {
             return false;
         } 
