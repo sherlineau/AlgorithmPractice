@@ -2,7 +2,7 @@
  * A class to represents a single item of a SinglyLinkedList that can be
  * linked to other Node instances to form a list of linked nodes.
  */
- class ListNode {
+class ListNode {
   /**
    * Constructs a new Node instance. Executed when the 'new' keyword is used.
    * @param {any} data The data to be added into this new instance of a Node.
@@ -51,15 +51,9 @@ class SinglyLinkedList {
    */
   insertAtFront(data) {
     const newNode = new ListNode(data);
-    if ( this.isEmpty() ) {
-      this.head = newNode;
-      return this;
-    }
-    
     newNode.next = this.head;
     this.head = newNode;
     return this;
-    
   }
 
   /**
@@ -104,64 +98,64 @@ class SinglyLinkedList {
     }
   }
 
-/**
- * Determines if this list is empty.
- * - Time: O(1) constant.
- * - Space: O(1) constant.
- * @returns {boolean}
-*/
-isEmpty() {
-  return this.head === null;
-}
+  /**
+   * Determines if this list is empty.
+   * - Time: O(1) constant.
+   * - Space: O(1) constant.
+   * @returns {boolean}
+  */
+  isEmpty() {
+    return this.head === null;
+  }
 
-/**
- * Creates a new node with the given data and inserts it at the back of
- * this list.
- * - Time: O(n) linear, n = length of list.
- * - Space: O(1) constant.
- * @param {any} data The data to be added to the new node.
- * @returns {SinglyLinkedList} This list.
-*/
-insertAtBack(data) {
-  const newBack = new ListNode(data);
+  /**
+   * Creates a new node with the given data and inserts it at the back of
+   * this list.
+   * - Time: O(n) linear, n = length of list.
+   * - Space: O(1) constant.
+   * @param {any} data The data to be added to the new node.
+   * @returns {SinglyLinkedList} This list.
+  */
+  insertAtBack(data) {
+    const newBack = new ListNode(data);
 
-  if (this.isEmpty()) {
-    this.head = newBack;
+    if (this.isEmpty()) {
+      this.head = newBack;
+      return this;
+    }
+
+    let runner = this.head;
+
+    while (runner.next !== null) {
+      runner = runner.next;
+    }
+
+    runner.next = newBack;
     return this;
   }
 
-  let runner = this.head;
+  /**
+   * Creates a new node with the given data and inserts it at the back of
+   * this list.
+   * - Time: O(n) linear, n = length of list.
+   * - Space: O(n) linear due to the call stack.
+   * @param {any} data The data to be added to the new node.
+   * @param {?ListNode} runner The current node during the traversal of this list
+   *    or null when the end of the list has been reached.
+   * @returns {SinglyLinkedList} This list.
+  */
+  insertAtBackRecursive(data, runner = this.head) {
+    if (this.isEmpty()) {
+      this.head = new ListNode(data);
+      return this;
+    }
 
-  while (runner.next !== null) {
-    runner = runner.next;
+    if (runner.next === null) {
+      runner.next = new ListNode(data);
+      return this;
+    }
+    return this.insertAtBackRecursive(data, runner.next);
   }
-
-  runner.next = newBack;
-  return this;
-}
-
-/**
- * Creates a new node with the given data and inserts it at the back of
- * this list.
- * - Time: O(n) linear, n = length of list.
- * - Space: O(n) linear due to the call stack.
- * @param {any} data The data to be added to the new node.
- * @param {?ListNode} runner The current node during the traversal of this list
- *    or null when the end of the list has been reached.
- * @returns {SinglyLinkedList} This list.
-*/
-insertAtBackRecursive(data, runner = this.head) {
-  if (this.isEmpty()) {
-    this.head = new ListNode(data);
-    return this;
-  }
-
-  if (runner.next === null) {
-    runner.next = new ListNode(data);
-    return this;
-  }
-  return this.insertAtBackRecursive(data, runner.next);
-}  
 
   /**
    * Calls insertAtBack on each item of the given array.
@@ -193,6 +187,79 @@ insertAtBackRecursive(data, runner = this.head) {
     }
     return arr;
   }
+
+  // --- day 3 ---
+  /**
+ * Removes the last node of this list.
+ * - Time: O(?).
+ * - Space: O(?).
+ * @returns {any} The data from the node that was removed.
+ */
+  removeBack() {
+    let secondToLast = this.head;
+
+    while (secondToLast.next.next !== null) {
+      secondToLast = secondToLast.next;
+    }
+
+    let deleted = secondToLast.next;
+    secondToLast.next = null;
+    return deleted;
+  }
+
+  /**
+   * Determines whether or not the given search value exists in this list.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {any} val The data to search for in the nodes of this list.
+   * @returns {boolean}
+   */
+  contains(val) {
+    if (this.isEmpty()) {
+      return false
+    }
+
+    let current = this.head;
+
+    while (current) {
+      if (current.data == val) {
+        return true
+      }
+      current = current.next
+    }
+    return false;
+  }
+
+  containsRecursive(val, current = this.head) {
+    if (!current) {
+      return false
+    }
+    if (current.data == val) {
+      return true;
+    }
+    return this.containsRecursive(val, current.next)
+  }
+
+  // EXTRA
+  /**
+   * Recursively finds the maximum integer data of the nodes in this list.
+   * - Time: O(?).
+   * - Space: O(?).
+   * @param {ListNode} runner The start or current node during traversal, or null
+   *    when the end of the list is reached.
+   * @param {ListNode} maxNode Keeps track of the node that contains the current
+   *    max integer as it's data.
+   * @returns {?number} The max int or null if none.
+   */
+  recursiveMax(runner = this.head, maxNode = this.head) {
+    if (runner.data > maxNode.data) {
+      maxNode = runner;
+    }
+    if (!runner.next) {
+      return maxNode.data;
+    }
+    return this.recursiveMax(runner = runner.next, maxNode)
+  }
 }
 
 /******************************************************************* 
@@ -205,8 +272,7 @@ const emptyList = new SinglyLinkedList();
 // const singleNodeList = new SinglyLinkedList().insertAtFront([1]);
 const biNodeList = new SinglyLinkedList().insertAtBackMany([1, 2]).insertAtFront(3);
 const firstThreeList = new SinglyLinkedList().insertAtBackMany([1, 2, 3]);
-console.log(firstThreeList.removeHead());
-// const secondThreeList = new SinglyLinkedList().insertAtBackMany([4, 5, 6]);
+const secondThreeList = new SinglyLinkedList().insertAtBackMany([4, 5, 6]);
 // const unorderedList = new SinglyLinkedList().insertAtBackMany([
 //   -5, -10, 4, -3, 6, 1, -7, -2,
 // ]);
@@ -228,4 +294,8 @@ console.log(firstThreeList.removeHead());
 // console.log(biNodeList.toArr());
 // console.log(singleNodeList.toArr());
 
-console.log(firstThreeList.toArr());
+// console.log(firstThreeList.removeBack());
+// console.log(firstThreeList.toArr());
+
+console.log(firstThreeList.contains(2));
+console.log(secondThreeList.contains(2));
